@@ -61,6 +61,24 @@ data.raw %>%
   coord_cartesian(xlim = c(as.POSIXct(strptime("2015-09-01", "%Y-%m-%d", tz="UTC")),
                            max(data.raw$Time)))+
   ggtitle("Google Search Trends of the xkcd survey English Terms")
+ggsave(file="xkcd-messy-trends.png")
+
+
+# faceted for better overview
+data.raw %>% 
+  gather(term, trend, -Time) %>% 
+  ggplot()+
+  geom_line(size=1)+
+  aes(x=Time, y=trend, colour=term)+
+  coord_cartesian(xlim = c(as.POSIXct(strptime("2015-09-01", "%Y-%m-%d", tz="UTC")),
+                           max(data.raw$Time)))+
+  facet_wrap(~term)+
+  guides(colour=FALSE)+
+  theme(axis.text.x=element_text(angle = 45, hjust = 1))+
+  ggtitle("Google Search Trends of the xkcd survey English Terms")
+ggsave(file="xkcd-facet-trends.png")
+
+
 
 
 
