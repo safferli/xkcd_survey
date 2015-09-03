@@ -3,7 +3,7 @@ options(scipen = 999)
 # library(bbbi)
 # library(data.table)
 library(dplyr)
-# library(tidyr)
+library(tidyr)
 library(ggplot2)
 
 # Define your workspace: "X:/xxx/"
@@ -52,7 +52,15 @@ data.raw <- f.gtrend.csv.read(1) %>%
   )
 
 
-
+# big pile of trend lines, starting September-01
+data.raw %>% 
+  gather(term, trend, -Time) %>% 
+  ggplot()+
+  geom_line(size=1)+
+  aes(x=Time, y=trend, colour=term)+
+  coord_cartesian(xlim = c(as.POSIXct(strptime("2015-09-01", "%Y-%m-%d", tz="UTC")),
+                           max(data.raw$Time)))+
+  ggtitle("Google Search Trends of the xkcd survey English Terms")
 
 
 
